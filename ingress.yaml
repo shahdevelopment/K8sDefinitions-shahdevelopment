@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: front-end-container
-        image: {{.Values.front-image}}
+        image: {{.Values.frontimage}}
         imagePullPolicy: Always
         ports:
         - name: http
@@ -51,7 +51,7 @@ spec:
     spec:
       containers:
       - name: back-end-container
-        image: {{.Values.back-image}}
+        image: {{.Values.backimage}}
         imagePullPolicy: Always
         ports:
         - name: http
