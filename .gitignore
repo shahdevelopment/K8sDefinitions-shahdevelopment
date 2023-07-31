@@ -1,3 +1,11 @@
 free-ram.sh
 internal-deploy.sh
 secret-deploy.sh
+dockerconfig.txt
+scale_default.sh
+scale_zero.sh
+stack-deploy.sh
+start-kubeclient.sh
+validate.sh
+var.sh
+git-push.bat
