@@ -2,17 +2,12 @@
 
 SECRET_DATA=$(base64 -w 0 < config.json)
 CERT_BASE64=$(base64 -w 0 < cert.pem)
-KEY_BASE64=$(base64 -w 0 < key.key)
-# base64 -w 0 cert.pem > cert-base64.pem
-# base64 -w 0 key.pem > key-base64.pem
+KEY_BASE64=$(base64 -w 0 < key.pem)
 
-# cat cert-base64.pem >
-
-
-ls secret.yaml > /dev/nul
+ls secret.yaml 2>/dev/null
 
 if [ $? -eq 0 ]; then
-  rm secret.yaml > /dev/nul
+  rm secret.yaml 2>/dev/null
 else
   echo creating secret.yaml
 fi
@@ -48,15 +43,11 @@ data:
   tls.key: $KEY_BASE64
 EOF
 
-ls helm/profilecharts/templates/ > /dev/null
+ls helm/profilecharts/templates/ 2>/dev/null
 if [ $? -eq 0 ]; then
   rm -rf helm/profilecharts/templates/*
   cp *.yaml helm/profilecharts/templates/
-  cp cert helm/profilecharts/templates/
-  cp key helm/profilecharts/templates/
 else
   mkdir helm/profilecharts/templates/
   cp *.yaml helm/profilecharts/templates/
-  cp cert helm/profilecharts/templates/
-  cp key helm/profilecharts/templates/
 fi
