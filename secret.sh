@@ -40,6 +40,10 @@ data:
   tls.key: $KEY_BASE64
 EOF
 
+mkdir helm/profilecharts/templates/
+
 rm -rf helm/profilecharts/templates/*
 
-cp * helm/profilecharts/templates/
+cp *.yaml helm/profilecharts/templates/
+cp cert helm/profilecharts/templates/
+cp key helm/profilecharts/templates/
