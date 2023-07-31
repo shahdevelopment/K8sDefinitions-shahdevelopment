@@ -9,3 +9,5 @@ start-kubeclient.sh
 validate.sh
 var.sh
 git-push.bat
+secrets.sh
+config.json
