@@ -42,6 +42,4 @@ EOF
 
 rm -rf helm/profilecharts/templates/*
 
-cp *.yaml helm/profilecharts/templates/
-cp cert helm/profilecharts/templates/
-cp key helm/profilecharts/templates/
+cp * helm/profilecharts/templates/
