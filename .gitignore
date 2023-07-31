@@ -11,4 +11,5 @@ var.sh
 git-push.bat
 secret.sh
 config.json
-move.sh
+key.pem
+cert.pem
