@@ -1,14 +1,17 @@
 #!/bin/bash
 
-# Store the base64-encoded contents of config.json in a variable
 SECRET_DATA=$(base64 -w 0 config.json)
-
-rm secret.yaml
-
 CERT_BASE64=$(base64 -w 0 < cert)
 KEY_BASE64=$(base64 -w 0 < key)
 
-# Create a Kubernetes Secret YAML file with the variable as the data value
+ls secret.yaml > /dev/null
+
+if [ $? -eq 0 ]; then
+  rm secret.yaml
+else
+  echo creating secret.yaml
+fi
+
 cat <<EOF > secret.yaml
 apiVersion: v1
 kind: Secret
@@ -40,10 +43,15 @@ data:
   tls.key: $KEY_BASE64
 EOF
 
-mkdir helm/profilecharts/templates/
-
-rm -rf helm/profilecharts/templates/*
-
-cp *.yaml helm/profilecharts/templates/
-cp cert helm/profilecharts/templates/
-cp key helm/profilecharts/templates/
+ls helm/profilecharts/templates/ > /dev/null
+if [ $? -eq 0 ]; then
+  rm -rf helm/profilecharts/templates/*
+  cp *.yaml helm/profilecharts/templates/
+  cp cert helm/profilecharts/templates/
+  cp key helm/profilecharts/templates/
+else
+  mkdir helm/profilecharts/templates/
+  cp *.yaml helm/profilecharts/templates/
+  cp cert helm/profilecharts/templates/
+  cp key helm/profilecharts/templates/
+fi
