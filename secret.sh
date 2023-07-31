@@ -1,13 +1,18 @@
 #!/bin/bash
 
-SECRET_DATA=$(base64 -w 0 config.json)
-CERT_BASE64=$(base64 -w 0 < cert)
-KEY_BASE64=$(base64 -w 0 < key)
+SECRET_DATA=$(base64 -w 0 < config.json)
+CERT_BASE64=$(base64 -w 0 < cert.pem)
+KEY_BASE64=$(base64 -w 0 < key.key)
+# base64 -w 0 cert.pem > cert-base64.pem
+# base64 -w 0 key.pem > key-base64.pem
 
-ls secret.yaml > /dev/null
+# cat cert-base64.pem >
+
+
+ls secret.yaml > /dev/nul
 
 if [ $? -eq 0 ]; then
-  rm secret.yaml
+  rm secret.yaml > /dev/nul
 else
   echo creating secret.yaml
 fi
