@@ -22,6 +22,31 @@ spec:
         ports:
         - name: http
           containerPort: 3000
+        livenessProbe:
+          exec:
+            command:
+              - curl
+              - --fail
+              - http://localhost:3000/health
+      # Configure probe parameters (optional)
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+        readinessProbe:
+      # Define the probe command
+          exec:
+            command:
+              - curl
+              - --fail
+              - http://localhost:3000/ready
+          # Configure probe parameters (optional)
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 3
+          successThreshold: 1
+          failureThreshold: 3
         resources:
           requests:
             memory: 64Mi
@@ -56,6 +81,31 @@ spec:
         ports:
         - name: http
           containerPort: 9000
+        livenessProbe:
+          exec:
+            command:
+              - curl
+              - --fail
+              - http://localhost:9000/health
+      # Configure probe parameters (optional)
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+        readinessProbe:
+      # Define the probe command
+          exec:
+            command:
+              - curl
+              - --fail
+              - http://localhost:9000/ready
+          # Configure probe parameters (optional)
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 3
+          successThreshold: 1
+          failureThreshold: 3
         resources:
           requests:
             memory: 64Mi
