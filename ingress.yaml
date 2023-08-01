@@ -58,7 +58,7 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/limit-rps: "10" # Limit to 10 requests per second per client IP
-    #nginx.ingress.kubernetes.io/whitelist-source-range-by-header: "X-Real-IP, X-Forwarded-For"
+    # nginx.ingress.kubernetes.io/whitelist-source-range-by-header: "X-Real-IP, X-Forwarded-For"
     nginx.ingress.kubernetes.io/configuration-snippet: |
       if ($http_origin !~* (^https?://(k8\.shahdevelopment\.tech|kubernetes\.shahdevelopment\.tech|shahdevelopment\.tech)$)) {
         return 302 https://kubernetes.shahdevelopment.tech/blocked;
