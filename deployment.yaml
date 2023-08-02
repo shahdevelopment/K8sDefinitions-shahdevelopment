@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: front-end-container
-        image: shahdevelopment/kube:v1.3
+        image: {{.Values.frontimage}}
         imagePullPolicy: Always
         ports:
         - name: http
@@ -76,7 +76,7 @@ spec:
     spec:
       containers:
       - name: back-end-container
-        image: shahdevelopment/kube_back:v1.3
+        image: {{.Values.backimage}}
         imagePullPolicy: Always
         ports:
         - name: http
