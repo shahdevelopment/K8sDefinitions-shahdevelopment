@@ -1,3 +1,6 @@
+# #######################################################################################################################################
+# #######################################################################################################################################
+---
 apiVersion: v1
 kind: Namespace
 metadata:
@@ -5,6 +8,7 @@ metadata:
     app.kubernetes.io/instance: ingress-nginx
     app.kubernetes.io/name: ingress-nginx
   name: ingress-nginx
+# #######################################################################################################################################
 ---
 apiVersion: v1
 automountServiceAccountToken: true
@@ -18,6 +22,7 @@ metadata:
     app.kubernetes.io/version: 1.8.1
   name: ingress-nginx
   namespace: ingress-nginx
+# #######################################################################################################################################
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -30,6 +35,7 @@ metadata:
     app.kubernetes.io/version: 1.8.1
   name: ingress-nginx-admission
   namespace: ingress-nginx
+# #######################################################################################################################################
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
@@ -120,6 +126,7 @@ rules:
   - list
   - watch
   - get
+# #######################################################################################################################################
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
@@ -140,6 +147,7 @@ rules:
   verbs:
   - get
   - create
+# #######################################################################################################################################
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -221,6 +229,7 @@ rules:
   - list
   - watch
   - get
+# #######################################################################################################################################
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -240,6 +249,7 @@ rules:
   verbs:
   - get
   - update
+# #######################################################################################################################################
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -260,6 +270,7 @@ subjects:
 - kind: ServiceAccount
   name: ingress-nginx
   namespace: ingress-nginx
+# #######################################################################################################################################
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -280,6 +291,7 @@ subjects:
 - kind: ServiceAccount
   name: ingress-nginx-admission
   namespace: ingress-nginx
+# #######################################################################################################################################
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -298,6 +310,7 @@ subjects:
 - kind: ServiceAccount
   name: ingress-nginx
   namespace: ingress-nginx
+# #######################################################################################################################################
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -317,6 +330,7 @@ subjects:
 - kind: ServiceAccount
   name: ingress-nginx-admission
   namespace: ingress-nginx
+# #######################################################################################################################################
 ---
 apiVersion: v1
 data:
@@ -331,6 +345,7 @@ metadata:
     app.kubernetes.io/version: 1.8.1
   name: ingress-nginx-controller
   namespace: ingress-nginx
+# #######################################################################################################################################
 ---
 apiVersion: v1
 kind: Service
@@ -368,6 +383,7 @@ spec:
     app.kubernetes.io/instance: ingress-nginx
     app.kubernetes.io/name: ingress-nginx
   type: LoadBalancer
+# #######################################################################################################################################
 ---
 apiVersion: v1
 kind: Service
@@ -391,6 +407,7 @@ spec:
     app.kubernetes.io/instance: ingress-nginx
     app.kubernetes.io/name: ingress-nginx
   type: ClusterIP
+# #######################################################################################################################################
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -506,6 +523,7 @@ spec:
       - name: webhook-cert
         secret:
           secretName: ingress-nginx-admission
+# #######################################################################################################################################
 ---
 apiVersion: batch/v1
 kind: Job
@@ -553,6 +571,7 @@ spec:
         runAsNonRoot: true
         runAsUser: 2000
       serviceAccountName: ingress-nginx-admission
+# #######################################################################################################################################
 ---
 apiVersion: batch/v1
 kind: Job
@@ -602,6 +621,7 @@ spec:
         runAsNonRoot: true
         runAsUser: 2000
       serviceAccountName: ingress-nginx-admission
+# #######################################################################################################################################
 ---
 apiVersion: networking.k8s.io/v1
 kind: IngressClass
@@ -615,6 +635,7 @@ metadata:
   name: nginx
 spec:
   controller: k8s.io/ingress-nginx
+# #######################################################################################################################################
 ---
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
@@ -648,3 +669,5 @@ webhooks:
     resources:
     - ingresses
   sideEffects: None
+# #######################################################################################################################################
+# #######################################################################################################################################
