@@ -81,9 +81,9 @@ spec:
       - name: back-end-container
         image: {{.Values.backimage}}
         imagePullPolicy: Always
-        volumeMounts:
-        - mountPath: "/usr/src/app/s3"
-          name: s3-storage
+        # volumeMounts:
+        # - mountPath: "/usr/src/app/s3"
+        #   name: s3-storage
         ports:
         - name: http
           containerPort: 9000
@@ -121,10 +121,10 @@ spec:
             cpu: 300m
       imagePullSecrets:
       - name: secret-tiger-docker
-  volumes:
-    - name: s3-storage
-      persistentVolumeClaim:
-        claimName: s3-pvc"
+  # volumes:
+  #   - name: s3-storage
+  #     persistentVolumeClaim:
+  #       claimName: s3-pvc"
 # ############################################################
 ---
 apiVersion: v1
