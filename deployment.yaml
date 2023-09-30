@@ -342,18 +342,18 @@ spec:
   - protocol: TCP
     port: 5432
 # #######################################################################################################################################
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: back-end-memcache
-  namespace: profile-site
-spec:
-  selector:
-    app: 
-  ports:
-  - protocol: TCP
-    port: 112111
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: back-end-memcache
+#   namespace: profile-site
+# spec:
+#   selector:
+#     app: 
+#   ports:
+#   - protocol: TCP
+#     port: 11211
 # #######################################################################################################################################
 ---
 apiVersion: v1
