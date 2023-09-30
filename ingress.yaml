@@ -65,7 +65,7 @@ metadata:
     nginx.ingress.kubernetes.io/limit-rps: "10" # Limit to 10 requests per second per client IP
     # nginx.ingress.kubernetes.io/whitelist-source-range-by-header: "X-Real-IP, X-Forwarded-For"
     nginx.ingress.kubernetes.io/configuration-snippet: |
-      if ($http_origin !~* (^https?://(k8\.shahdevelopment\.tech|kubernetes\.shahdevelopment\.tech|shahdevelopment\.tech)$)) {
+      if ($http_origin !~* (^https?://(k8-backend\.shahdevelopment\.tech|kubernetes\.shahdevelopment\.tech|shahdevelopment\.tech)$)) {
         return 302 https://kubernetes.shahdevelopment.tech/blocked;
       }
       add_header 'Access-Control-Allow-Origin' "$http_origin" always;
@@ -87,27 +87,27 @@ spec:
               name: back-end-service
               port:
                 number: 9000
-          - pathType: Prefix
-            path: /pg
-            backend:
-              service:
-                name: back-end-pg
-                port:
-                  number: 5432
-          - pathType: Prefix
-            path: /memcache
-            backend:
-              service:
-                name: back-end-memcache
-                port:
-                  number: 11211
-          - pathType: Prefix
-            path: /rabbit
-            backend:
-              service:
-                name: back-end-rabbit
-                port:
-                  number: 15674
+        - pathType: Prefix
+          path: /pg
+          backend:
+            service:
+              name: back-end-pg
+              port:
+                number: 5432
+        - pathType: Prefix
+          path: /memcache
+          backend:
+            service:
+              name: back-end-memcache
+              port:
+                number: 11211
+        - pathType: Prefix
+          path: /rabbit
+          backend:
+            service:
+              name: back-end-rabbit
+              port:
+                number: 15674
                   
                   
                   
