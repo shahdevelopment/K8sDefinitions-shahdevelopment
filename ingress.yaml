@@ -94,13 +94,13 @@ spec:
               name: back-end-pg
               port:
                 number: 5432
-        - pathType: Prefix
-          path: /memcache
-          backend:
-            service:
-              name: back-end-memcache
-              port:
-                number: 11211
+        # - pathType: Prefix
+        #   path: /memcache
+        #   backend:
+        #     service:
+        #       name: back-end-memcache
+        #       port:
+        #         number: 11211
         - pathType: Prefix
           path: /rabbit
           backend:

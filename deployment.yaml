@@ -126,64 +126,64 @@ spec:
   #     persistentVolumeClaim:
   #       claimName: s3-pvc"
 # #######################################################################################################################################
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: my-backend-memcache
-  namespace: profile-site
-  labels:
-    app: back-end-memcache
-spec:
-  replicas: 2
-  selector:
-    matchLabels:
-      app: back-end-memcache
-  template:
-    metadata:
-      labels:
-        app: back-end-memcache
-    spec:
-      containers:
-      - name: back-end-memcache-container
-        image: {{.Values.memimage}}
-        imagePullPolicy: Always
-        ports:
-        - name: http
-          containerPort: 11211
-        livenessProbe:
-          exec:
-            command:
-              - curl
-              - --fail
-              - http://localhost:11211/health
-      # Configure probe parameters (optional)
-          initialDelaySeconds: 15
-          periodSeconds: 10
-          timeoutSeconds: 5
-          successThreshold: 1
-          failureThreshold: 3
-        readinessProbe:
-      # Define the probe command
-          exec:
-            command:
-              - curl
-              - --fail
-              - http://localhost:11211/ready
-          # Configure probe parameters (optional)
-          initialDelaySeconds: 5
-          periodSeconds: 5
-          timeoutSeconds: 3
-          successThreshold: 1
-          failureThreshold: 3
-        resources:
-          requests:
-            memory: 64Mi
-            cpu: 100m
-          limits:
-            memory: 128Mi
-            cpu: 300m
-      imagePullSecrets:
-      - name: secret-tiger-docker
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: my-backend-memcache
+#   namespace: profile-site
+#   labels:
+#     app: back-end-memcache
+# spec:
+#   replicas: 2
+#   selector:
+#     matchLabels:
+#       app: back-end-memcache
+#   template:
+#     metadata:
+#       labels:
+#         app: back-end-memcache
+#     spec:
+#       containers:
+#       - name: back-end-memcache-container
+#         image: {{.Values.memimage}}
+#         imagePullPolicy: Always
+#         ports:
+#         - name: http
+#           containerPort: 11211
+#         livenessProbe:
+#           exec:
+#             command:
+#               - curl
+#               - --fail
+#               - http://localhost:11211/health
+#       # Configure probe parameters (optional)
+#           initialDelaySeconds: 15
+#           periodSeconds: 10
+#           timeoutSeconds: 5
+#           successThreshold: 1
+#           failureThreshold: 3
+#         readinessProbe:
+#       # Define the probe command
+#           exec:
+#             command:
+#               - curl
+#               - --fail
+#               - http://localhost:11211/ready
+#           # Configure probe parameters (optional)
+#           initialDelaySeconds: 5
+#           periodSeconds: 5
+#           timeoutSeconds: 3
+#           successThreshold: 1
+#           failureThreshold: 3
+#         resources:
+#           requests:
+#             memory: 64Mi
+#             cpu: 100m
+#           limits:
+#             memory: 128Mi
+#             cpu: 300m
+#       imagePullSecrets:
+#       - name: secret-tiger-docker
 # #######################################################################################################################################
 apiVersion: apps/v1
 kind: Deployment
