@@ -13,10 +13,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - "*.shahdevelopment.tech"
+    - "*.shahsportfolio.online"
     secretName: wildcard-certificate
   rules:
-    - host: kubernetes.shahdevelopment.tech
+    - host: kubernetes.shahsportfolio.online
       http:
         paths:
         - path: /
@@ -39,10 +39,10 @@ spec:
 # spec:
 #   tls:
 #   - hosts:
-#     - "*.shahdevelopment.tech"
+#     - "*.shahsportfolio.online"
 #     secretName: wildcard-certificate
 #   rules:
-#     - host: k8.shahdevelopment.tech
+#     - host: k8.shahsportfolio.online
 #       http:
 #         paths:
 #         - path: /
@@ -66,7 +66,7 @@ metadata:
     # nginx.ingress.kubernetes.io/whitelist-source-range-by-header: "X-Real-IP, X-Forwarded-For"
     nginx.ingress.kubernetes.io/configuration-snippet: |
       if ($http_origin !~* (^https?://(k8-backend\.shahdevelopment\.tech|kubernetes\.shahdevelopment\.tech|shahdevelopment\.tech)$)) {
-        return 302 https://kubernetes.shahdevelopment.tech/blocked;
+        return 302 https://kubernetes.shahsportfolio.online/blocked;
       }
       add_header 'Access-Control-Allow-Origin' "$http_origin" always;
       add_header 'Access-Control-Allow-Methods' 'GET, POST, DELETE, OPTIONS' always;
@@ -74,10 +74,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - "*.shahdevelopment.tech"
+    - "*.shahsportfolio.online"
     secretName: wildcard-certificate
   rules:
-    - host: k8-backend.shahdevelopment.tech
+    - host: k8-backend.shahsportfolio.online
       http:
         paths:
         - path: /
@@ -120,7 +120,7 @@ spec:
 #     # nginx.ingress.kubernetes.io/whitelist-source-range-by-header: "X-Real-IP, X-Forwarded-For"
 #     nginx.ingress.kubernetes.io/configuration-snippet: |
 #       if ($http_origin !~* (^https?://(k8-backend\.shahdevelopment\.tech|kubernetes\.shahdevelopment\.tech|shahdevelopment\.tech)$)) {
-#         return 302 https://kubernetes.shahdevelopment.tech/blocked;
+#         return 302 https://kubernetes.shahsportfolio.online/blocked;
 #       }
 #       add_header 'Access-Control-Allow-Origin' "$http_origin" always;
 #       add_header 'Access-Control-Allow-Methods' 'GET, POST, DELETE, OPTIONS' always;
@@ -128,10 +128,10 @@ spec:
 # spec:
 #   tls:
 #   - hosts:
-#     - "*.shahdevelopment.tech"
+#     - "*.shahsportfolio.online"
 #     secretName: wildcard-certificate
 #   rules:
-#     - host: k8-backend.shahdevelopment.tech
+#     - host: k8-backend.shahsportfolio.online
 #       http:
 #         paths:
 #         - path: /
@@ -154,7 +154,7 @@ spec:
 #     # nginx.ingress.kubernetes.io/whitelist-source-range-by-header: "X-Real-IP, X-Forwarded-For"
 #     nginx.ingress.kubernetes.io/configuration-snippet: |
 #       if ($http_origin !~* (^https?://(k8-backend\.shahdevelopment\.tech|kubernetes\.shahdevelopment\.tech|shahdevelopment\.tech)$)) {
-#         return 302 https://kubernetes.shahdevelopment.tech/blocked;
+#         return 302 https://kubernetes.shahsportfolio.online/blocked;
 #       }
 #       add_header 'Access-Control-Allow-Origin' "$http_origin" always;
 #       add_header 'Access-Control-Allow-Methods' 'GET, POST, DELETE, OPTIONS' always;
@@ -162,10 +162,10 @@ spec:
 # spec:
 #   tls:
 #   - hosts:
-#     - "*.shahdevelopment.tech"
+#     - "*.shahsportfolio.online"
 #     secretName: wildcard-certificate
 #   rules:
-#     - host: k8-pg.shahdevelopment.tech
+#     - host: k8-pg.shahsportfolio.online
 #       http:
 #         paths:
 #         - path: /
@@ -188,7 +188,7 @@ spec:
 #     # nginx.ingress.kubernetes.io/whitelist-source-range-by-header: "X-Real-IP, X-Forwarded-For"
 #     nginx.ingress.kubernetes.io/configuration-snippet: |
 #       if ($http_origin !~* (^https?://(k8-backend\.shahdevelopment\.tech|kubernetes\.shahdevelopment\.tech|shahdevelopment\.tech)$)) {
-#         return 302 https://kubernetes.shahdevelopment.tech/blocked;
+#         return 302 https://kubernetes.shahsportfolio.online/blocked;
 #       }
 #       add_header 'Access-Control-Allow-Origin' "$http_origin" always;
 #       add_header 'Access-Control-Allow-Methods' 'GET, POST, DELETE, OPTIONS' always;
@@ -196,10 +196,10 @@ spec:
 # spec:
 #   tls:
 #   - hosts:
-#     - "*.shahdevelopment.tech"
+#     - "*.shahsportfolio.online"
 #     secretName: wildcard-certificate
 #   rules:
-#     - host: k8-rabbit.shahdevelopment.tech
+#     - host: k8-rabbit.shahsportfolio.online
 #       http:
 #         paths:
 #         - path: /
