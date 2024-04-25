@@ -14,6 +14,7 @@ spec:
   tls:
   - hosts:
     - "*.shahsportfolio.online"
+    - "kubernetes.shahsportfolio.online"
     secretName: wildcard-certificate
   rules:
     - host: kubernetes.shahsportfolio.online
@@ -75,6 +76,7 @@ spec:
   tls:
   - hosts:
     - "*.shahsportfolio.online"
+    - "k8-backend.shahsportfolio.online"
     secretName: wildcard-certificate
   rules:
     - host: k8-backend.shahsportfolio.online

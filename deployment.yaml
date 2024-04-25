@@ -58,7 +58,6 @@ spec:
             cpu: 300m
       imagePullSecrets:
       - name: secret-tiger-docker
-
 # ############################################################
 ---
 apiVersion: apps/v1
