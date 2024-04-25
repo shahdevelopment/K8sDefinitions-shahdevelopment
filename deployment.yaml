@@ -58,6 +58,10 @@ spec:
             cpu: 300m
       imagePullSecrets:
       - name: secret-tiger-docker
+      tolerations:
+      - key: "node-role.kubernetes.io/master"
+        operator: "Exists"
+        effect: "NoSchedule"
 # ############################################################
 ---
 apiVersion: apps/v1
