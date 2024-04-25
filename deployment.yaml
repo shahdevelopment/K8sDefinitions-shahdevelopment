@@ -51,10 +51,10 @@ spec:
           failureThreshold: 3
         resources:
           requests:
-            memory: 64Mi
+            memory: 250Mi
             cpu: 100m
           limits:
-            memory: 128Mi
+            memory: 250Mi
             cpu: 300m
       imagePullSecrets:
       - name: secret-tiger-docker
@@ -114,10 +114,10 @@ spec:
           failureThreshold: 3
         resources:
           requests:
-            memory: 64Mi
+            memory: 250Mi
             cpu: 100m
           limits:
-            memory: 128Mi
+            memory: 250Mi
             cpu: 300m
       imagePullSecrets:
       - name: secret-tiger-docker
