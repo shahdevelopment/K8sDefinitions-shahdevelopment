@@ -150,36 +150,8 @@ spec:
       - name: db-container
         image: {{.Values.pgimage}}
         imagePullPolicy: Always
-        # volumeMounts:
-        # - mountPath: "/usr/src/app/s3"
-        #   name: s3-storage
         ports:
         - containerPort: 5432
-        # livenessProbe:
-        #   exec:
-        #     command:
-        #       - curl
-        #       - --fail
-        #       - http://localhost:5432/health
-      # Configure probe parameters (optional)
-          # initialDelaySeconds: 15
-          # periodSeconds: 10
-          # timeoutSeconds: 5
-          # successThreshold: 1
-          # failureThreshold: 3
-      #   readinessProbe:
-      # # Define the probe command
-      #     exec:
-      #       command:
-      #         - curl
-      #         - --fail
-      #         - http://localhost:5432/ready
-      #     # Configure probe parameters (optional)
-      #     initialDelaySeconds: 5
-      #     periodSeconds: 5
-      #     timeoutSeconds: 3
-      #     successThreshold: 1
-      #     failureThreshold: 3
         resources:
           requests:
             memory: 500Mi
@@ -191,7 +163,6 @@ spec:
       - name: secret-tiger-docker
       nodeSelector:
         dedicated: master
-
 # ############################################################
 ---
 apiVersion: v1
@@ -207,7 +178,6 @@ spec:
     port: 5432
     targetPort: 5432
 # ############################################################
-
 ---
 apiVersion: v1
 kind: Service
