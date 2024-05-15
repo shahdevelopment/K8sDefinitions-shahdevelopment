@@ -154,7 +154,7 @@ spec:
         # - mountPath: "/usr/src/app/s3"
         #   name: s3-storage
         ports:
-          containerPort: 5432
+        - containerPort: 5432
         # livenessProbe:
         #   exec:
         #     command:
