@@ -75,6 +75,25 @@ spec:
         #       name: back-end-rabbit
         #       port:
         #         number: 15674
+# ---
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: postgres-ingress
+# spec:
+#   rules:
+#   - host: postgres.local
+#     http:
+#       paths:
+#       - path: /
+#         pathType: Prefix
+#         backend:
+#           service:
+#             name: db-service
+#             port:
+#               number: 5432
+
+
 # ####################################################################################################################################
 # ---
 # apiVersion: networking.k8s.io/v1
