@@ -86,7 +86,7 @@ spec:
     - "k8-db.shahsportfolio.online"
     secretName: wildcard-certificate
   rules:
-    - host: k8-backend.shahsportfolio.online
+    - host: k8-db.shahsportfolio.online
       http:
         paths:
         - path: /
