@@ -150,11 +150,9 @@ spec:
       - name: db-container
         image: {{.Values.pgimage}}
         imagePullPolicy: Always
-        env:
-        - name: DB_HOST
-          value: {{.Values.postgresEndPoint}}
         ports:
-        - containerPort: 5432
+        - name: http
+          containerPort: 5432
         resources:
           requests:
             memory: 500Mi
