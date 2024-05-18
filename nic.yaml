@@ -364,6 +364,10 @@ spec:
     port: 443
     protocol: TCP
     targetPort: https
+  - name: pgsql
+    port: 5432
+    targetPort: 5432
+    protocol: TCP
   selector:
     app.kubernetes.io/component: controller
     app.kubernetes.io/instance: ingress-nginx
