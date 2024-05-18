@@ -151,8 +151,7 @@ spec:
         image: {{.Values.pgimage}}
         imagePullPolicy: Always
         ports:
-        - name: http
-          containerPort: 5432
+        - containerPort: 5432
         resources:
           requests:
             memory: 500Mi
