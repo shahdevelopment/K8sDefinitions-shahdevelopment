@@ -8,6 +8,14 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/limit-rps: "10"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      if ($http_origin !~* (^https?://(k8-backend\.shahsportfolio\.online|kubernetes\.shahsportfolio\.online|shahsportfolio\.online)$)) {
+        return 302 https://kubernetes.shahsportfolio.online/blocked;
+      }
+        add_header 'Access-Control-Allow-Origin' "$http_origin" always;
+        add_header 'Access-Control-Allow-Methods' 'GET, POST, DELETE, OPTIONS' always;
+        add_header 'Access-Control-Allow-Headers' 'Authorization, X-Requested-With, Content-Type' always;
+        add_header 'Access-Control-Allow-Credentials' 'true';
 spec:
   ingressClassName: nginx
   tls:
