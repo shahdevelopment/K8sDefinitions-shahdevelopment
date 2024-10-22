@@ -8,10 +8,6 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/limit-rps: "10"
-    nginx.ingress.kubernetes.io/configuration-snippet: |
-      add_header 'Access-Control-Allow-Methods' 'GET, POST, DELETE, OPTIONS' always;
-      add_header 'Access-Control-Allow-Headers' 'Authorization, X-Requested-With, Content-Type' always;
-      add_header 'Access-Control-Allow-Credentials' 'true';
 spec:
   ingressClassName: nginx
   tls:
@@ -47,7 +43,8 @@ metadata:
       add_header 'Access-Control-Allow-Origin' "$http_origin" always;
       add_header 'Access-Control-Allow-Methods' 'GET, POST, DELETE, OPTIONS' always;
       add_header 'Access-Control-Allow-Headers' 'Authorization, X-Requested-With, Content-Type' always;
-      add_header 'Access-Control-Allow-Credentials' 'true';
+      add_header 'Access-Control-Allow-Credentials' 'true' always;
+      add_header 'Vary' 'Origin' always;
 spec:
   ingressClassName: nginx
   tls:
