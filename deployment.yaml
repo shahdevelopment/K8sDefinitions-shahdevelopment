@@ -1,5 +1,20 @@
-# #######################################################################################################################################
-# #######################################################################################################################################
+# #################################################################################################
+# - Name Space Definitions -----------------------------------------------------------------------/
+# #################################################################################################
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: profile-site
+# ---
+# apiVersion: v1
+# kind: Namespace
+# metadata:
+#   name: monitoring
+# #################################################################################################
+# - Deployment Definitions -----------------------------------------------------------------------/
+# #################################################################################################
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -58,7 +73,8 @@ spec:
             cpu: 300m
       imagePullSecrets:
       - name: secret-tiger-docker
-# ############################################################
+      nodeSelector:
+        node-group: group1
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -77,6 +93,18 @@ spec:
       labels:
         app: back-end
     spec:
+      initContainers:
+        - name: wait-for-db
+          image: alpine
+          command:
+            - sh
+            - -c
+            - |
+              apk add --no-cache netcat-openbsd && \
+              until nc -z {{ .Values.back_end }} 5432; do 
+              echo waiting for service;
+              sleep 2;
+              done;
       containers:
       - name: back-end-container
         image: {{.Values.backimage}}
@@ -122,12 +150,11 @@ spec:
       imagePullSecrets:
       - name: secret-tiger-docker
       nodeSelector:
-        dedicated: master
+        node-group: group1
   # volumes:
   #   - name: s3-storage
   #     persistentVolumeClaim:
   #       claimName: s3-pvc"
-# ############################################################
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -162,8 +189,68 @@ spec:
       imagePullSecrets:
       - name: secret-tiger-docker
       nodeSelector:
-        dedicated: master
-# ############################################################
+        node-group: master
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus
+  namespace: profile-site
+  labels:
+    app: prometheus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      containers:
+        - name: prometheus
+          image: prom/prometheus:v2.31.2  # Use the latest version
+          ports:
+            - containerPort: 9090
+          args:
+            - '--config.file=/etc/prometheus/prometheus.yml'
+            - '--storage.tsdb.path=/prometheus/'
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/prometheus/
+            - name: storage-volume
+              mountPath: /prometheus/
+      volumes:
+        - name: config-volume
+          configMap:
+            name: prometheus-config
+        - name: storage-volume
+          emptyDir: {}
+      nodeSelector:
+        node-group: group2
+# #################################################################################################
+# - Config Maps ----------------------------------------------------------------------------------/
+# #################################################################################################
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+  namespace: profile-site
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 15s  # Default scrape interval
+      evaluation_interval: 15s  # Default evaluation interval
+    scrape_configs:
+      - job_name: 'kubernetes-apis'
+        kubernetes_sd_configs:
+          - role: endpoints
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_namespace]
+            action: keep
+            regex: default|monitoring  # Adjust according to your namespaces
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -172,7 +259,21 @@ metadata:
   namespace: ingress-nginx
 data:
   5432: "profile-site/db-service:5432"
-# ############################################################
+# #################################################################################################
+# - Service Definitions --------------------------------------------------------------------------/
+# #################################################################################################
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus
+  namespace: profile-site
+spec:
+  selector:
+    app: prometheus
+  ports:
+    - port: 9090
+      targetPort: 9090
 ---
 apiVersion: v1
 kind: Service
@@ -186,7 +287,6 @@ spec:
   - protocol: TCP
     port: 5432
     targetPort: 5432
-# ############################################################
 ---
 apiVersion: v1
 kind: Service
@@ -199,7 +299,6 @@ spec:
   ports:
   - protocol: TCP
     port: 3000
-# ############################################################
 ---
 apiVersion: v1
 kind: Service
@@ -212,5 +311,5 @@ spec:
   ports:
   - protocol: TCP
     port: 9000
-# #######################################################################################################################################
-# #######################################################################################################################################
+# #################################################################################################
+# #################################################################################################
