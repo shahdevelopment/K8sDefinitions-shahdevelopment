@@ -501,7 +501,7 @@ spec:
         - mountPath: /usr/local/certificates/
           name: webhook-cert
           readOnly: true
-        - name: auth-secret
+        - name: prometheus-basic-auth
           mountPath: /etc/nginx/.htpasswd
           subPath: .htpasswd
       dnsPolicy: ClusterFirst
@@ -513,6 +513,9 @@ spec:
       - name: webhook-cert
         secret:
           secretName: ingress-nginx-admission
+      - name: prometheus-basic-auth
+        secret:
+          secretName: prometheus-basic-auth
 ---
 apiVersion: batch/v1
 kind: Job
