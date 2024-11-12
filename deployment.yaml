@@ -273,9 +273,84 @@ spec:
               memory: 128Mi
       nodeSelector:
         node-group: group2
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+  namespace: profile-site
+  labels:
+    app: grafana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana
+  template:
+    metadata:
+      labels:
+        app: grafana
+    spec:
+      securityContext:
+        fsGroup: 472
+        supplementalGroups:
+          - 0
+      containers:
+        - name: grafana
+          image: grafana/grafana:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 2000
+              name: http-grafana
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 250m
+              memory: 750Mi
+          env:
+            # Environment variables for Grafana configuration
+            - name: GF_SERVER_HTTP_PORT
+              value: "2000"  # Set Grafana's internal server port to 2000
+            - name: GF_SECURITY_ADMIN_USER
+              value: {{.Values.gfUser}}
+            - name: GF_SECURITY_ADMIN_PASSWORD
+              value: {{.Values.gfPass}}
+            - name: GF_AUTH_ANONYMOUS_ENABLED
+              value: "true"
+            # Configuring Prometheus as the data source
+          volumeMounts:
+            - name: grafana-storage
+              mountPath: /var/lib/grafana
+            - name: grafana-config
+              mountPath: /etc/grafana/provisioning/datasources
+      volumes:
+        - name: grafana-storage
+          emptyDir: {}
+        - name: grafana-config
+          configMap:
+            name: grafana-datasource
+      nodeSelector:
+        node-group: group1
 # #################################################################################################
 # - Config Maps ----------------------------------------------------------------------------------/
 # #################################################################################################
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-datasource
+  namespace: profile-site
+  labels:
+    app: grafana
+data:
+  prometheus-datasource.yaml: |
+    apiVersion: 1
+    datasources:
+      - name: Prometheus
+        type: prometheus
+        url: https://prometheus.shahsportfolio.online  # Your Prometheus URL
+        access: proxy
+        isDefault: true
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -338,6 +413,21 @@ data:
 # #################################################################################################
 # - Service Definitions --------------------------------------------------------------------------/
 # #################################################################################################
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana
+  namespace: profile-site
+  labels:
+    app: grafana
+spec:
+  ports:
+    - port: 2000
+      targetPort: 2000
+      protocol: TCP
+  selector:
+    app: grafana
 ---
 apiVersion: v1
 kind: Service
