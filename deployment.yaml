@@ -325,7 +325,9 @@ spec:
               mountPath: /etc/grafana/provisioning/datasources
       volumes:
         - name: grafana-storage
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: ebs-pvc  # PVC name
+          # emptyDir: {}
         - name: grafana-config
           configMap:
             name: grafana-datasource
