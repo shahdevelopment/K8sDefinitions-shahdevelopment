@@ -92,9 +92,6 @@ spec:
       - name: back-end-container
         image: {{.Values.backimage}}
         imagePullPolicy: Always
-        # volumeMounts:
-        # - mountPath: "/usr/src/app/s3"
-        #   name: s3-storage
         ports:
         - name: http
           containerPort: 9000
@@ -134,10 +131,6 @@ spec:
       - name: secret-tiger-docker
       nodeSelector:
         node-group: group2
-  # volumes:
-  #   - name: s3-storage
-  #     persistentVolumeClaim:
-  #       claimName: s3-pvc"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -168,7 +161,7 @@ spec:
           - containerPort: 9187  # Port for PostgreSQL exporter metrics
         env:
           - name: DATA_SOURCE_NAME
-            value: "${DATA_SOURCE}"
+            value: "${DATA_SOURCE}" # ------------------------------------------------------------ envsubst populated Variable
         args:
           - "--no-collector.stat_bgwriter"
         resources:
@@ -210,7 +203,7 @@ spec:
             - '--config.file=/etc/prometheus/prometheus.yml'
             - '--storage.tsdb.path=/prometheus/'
             - "--web.listen-address=:9090"
-            - "--web.external-url=${PROM_URL}"
+            - "--web.external-url=${PROM_URL}" # --------------------------------------------------- envsubst populated Variable
           volumeMounts:
             - name: config-volume
               mountPath: /etc/prometheus/
@@ -350,7 +343,7 @@ data:
     datasources:
       - name: Prometheus
         type: prometheus
-        url: ${PROM_URL}  # Your Prometheus URL
+        url: ${PROM_URL}  # ------------------------------------------------------------------ envsubst populated Variable
         access: proxy
         isDefault: true
 ---
@@ -395,7 +388,7 @@ data:
           - role: endpoints
         relabel_configs:
           - target_label: __address__
-            replacement: '${API_IP}'
+            replacement: '${API_IP}' # ------------------------------------------------------- envsubst populated Variable
           - source_labels: [__meta_kubernetes_service_name]
             action: keep
             regex: kubernetes
