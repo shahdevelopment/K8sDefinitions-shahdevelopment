@@ -168,7 +168,7 @@ spec:
           - containerPort: 9187  # Port for PostgreSQL exporter metrics
         env:
           - name: DATA_SOURCE_NAME
-            value: "postgresql://ansible:fg6dfg6f7dg678df6fd6fd97867df86h98df76h78d9@localhost:5432/devops?sslmode=disable"
+            value: "${DATA_SOURCE}"
         args:
           - "--no-collector.stat_bgwriter"
         resources:
@@ -210,7 +210,7 @@ spec:
             - '--config.file=/etc/prometheus/prometheus.yml'
             - '--storage.tsdb.path=/prometheus/'
             - "--web.listen-address=:9090"
-            - "--web.external-url=https://prometheus.shahsportfolio.online"
+            - "--web.external-url=${PROM_URL}"
           volumeMounts:
             - name: config-volume
               mountPath: /etc/prometheus/
@@ -350,7 +350,7 @@ data:
     datasources:
       - name: Prometheus
         type: prometheus
-        url: https://prometheus.shahsportfolio.online  # Your Prometheus URL
+        url: ${PROM_URL}  # Your Prometheus URL
         access: proxy
         isDefault: true
 ---
@@ -395,7 +395,7 @@ data:
           - role: endpoints
         relabel_configs:
           - target_label: __address__
-            replacement: '100.64.0.1:443'
+            replacement: '${API_IP}'
           - source_labels: [__meta_kubernetes_service_name]
             action: keep
             regex: kubernetes
