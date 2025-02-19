@@ -619,19 +619,7 @@ spec:
     - name: http
       port: 15672
       targetPort: 15672 # Management UI port
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: rabbitmq-queue
-  namespace: profile-site
-spec:
-  type: LoadBalancer  # Creates a public IP for AMQP
-  ports:
     - name: amqp
       port: 5672
       targetPort: 5672
-      protocol: TCP
-  selector:
-    app: rabbitmq
 # #################################################################################################
