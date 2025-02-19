@@ -162,8 +162,15 @@ metadata:
   name: rabbitmq-ingress
   namespace: profile-site
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
-    nginx.ingress.kubernetes.io/limit-rps: "10" # Limit to 10 requests per second per client IP
+    # nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-buffering: "off"
+    # nginx.ingress.kubernetes.io/websocket-services: "rabbitmq"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      add_header 'Access-Control-Allow-Origin' '*';
+      add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+      add_header 'Access-Control-Allow-Headers' 'Content-Type,Authorization';
 spec:
   ingressClassName: nginx
   tls:
@@ -182,5 +189,6 @@ spec:
               name: rabbitmq
               port:
                 number: 15672
+
 # #######################################################################################################################################       
 # #######################################################################################################################################
