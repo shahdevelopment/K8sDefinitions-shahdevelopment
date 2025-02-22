@@ -27,6 +27,15 @@ spec:
       labels:
         app: front-end
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: node-group
+                    operator: In
+                    values:
+                      - group1   # Match nodes with node-group=group1
       containers:
       - name: front-end-container
         image: {{.Values.frontimage}}
@@ -68,8 +77,6 @@ spec:
             cpu: 300m
       imagePullSecrets:
       - name: secret-tiger-docker
-      nodeSelector:
-        node-group: group2
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -88,6 +95,15 @@ spec:
       labels:
         app: back-end
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: node-group
+                    operator: In
+                    values:
+                      - group1   # Match nodes with node-group=group1
       containers:
       - name: back-end-container
         image: {{.Values.backimage}}
@@ -129,8 +145,6 @@ spec:
             cpu: 300m
       imagePullSecrets:
       - name: secret-tiger-docker
-      nodeSelector:
-        node-group: group2
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -149,6 +163,15 @@ spec:
       labels:
         app: db
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: node-group
+                    operator: In
+                    values:
+                      - group1   # Match nodes with node-group=group1
       containers:
       - name: db-container
         image: {{.Values.pgimage}}
@@ -173,8 +196,6 @@ spec:
             cpu: 300m
       imagePullSecrets:
       - name: secret-tiger-docker
-      nodeSelector:
-        node-group: master
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -193,6 +214,15 @@ spec:
       labels:
         app: prometheus
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: node-group
+                    operator: In
+                    values:
+                      - group1   # Match nodes with node-group=group1
       serviceAccountName: monitoring-service-account
       containers:
         - name: prometheus
@@ -233,8 +263,6 @@ spec:
         - name: ca-key
           secret:
             secretName: my-key-secret
-      nodeSelector:
-        node-group: group1
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -251,6 +279,15 @@ spec:
       labels:
         app: kube-state-metrics
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: node-group
+                    operator: In
+                    values:
+                      - group1   # Match nodes with node-group=group1
       containers:
         - name: kube-state-metrics
           image: k8s.gcr.io/kube-state-metrics/kube-state-metrics:v2.1.0
@@ -264,8 +301,6 @@ spec:
             requests:
               cpu: 100m
               memory: 128Mi
-      nodeSelector:
-        node-group: group2
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -284,6 +319,15 @@ spec:
       labels:
         app: grafana
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: node-group
+                    operator: In
+                    values:
+                      - master   # Match nodes with node-group=group1
       securityContext:
         fsGroup: 472
         supplementalGroups:
@@ -324,8 +368,60 @@ spec:
         - name: grafana-config
           configMap:
             name: grafana-datasource
-      nodeSelector:
-        node-group: group1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq
+  namespace: profile-site
+  labels:
+    app: rabbitmq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rabbitmq
+  template:
+    metadata:
+      labels:
+        app: rabbitmq
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: node-group
+                    operator: In
+                    values:
+                      - group1   # Match nodes with node-group=group1
+      containers:
+        - name: rabbitmq
+          image: rabbitmq:3-management  # RabbitMQ with management UI
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "2Gi"
+              cpu: "1"
+          ports:
+            - containerPort: 5672   # RabbitMQ message broker
+            - containerPort: 15672  # RabbitMQ management UI
+          env:
+            - name: RABBITMQ_DEFAULT_USER
+              value: {{.Values.rabUser}}
+            - name: RABBITMQ_DEFAULT_PASS
+              value: {{.Values.rabPass}}
+          volumeMounts:
+            - name: rabbitmq-config
+              mountPath: /etc/rabbitmq/rabbitmq.conf
+              subPath: rabbitmq.conf
+      volumes:
+        - name: rabbitmq-config
+          configMap:
+            name: rabbitmq-config
+
 # #################################################################################################
 # - Config Maps ----------------------------------------------------------------------------------/
 # #################################################################################################
@@ -405,6 +501,19 @@ metadata:
   namespace: ingress-nginx
 data:
   5432: "profile-site/db-service:5432"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rabbitmq-config
+  namespace: profile-site
+data:
+  rabbitmq.conf: |
+    management.cors.allow_origins = none
+    management.cors.max_age = 86400
+    management.headers.frame_options = SAMEORIGIN
+    management.headers.xss_protection = 1
+    vm_memory_high_watermark.relative = 0.7  # Increase to 70% of system memory
 # #################################################################################################
 # - Service Definitions --------------------------------------------------------------------------/
 # #################################################################################################
@@ -497,4 +606,35 @@ spec:
   ports:
   - protocol: TCP
     port: 9000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq
+  namespace: profile-site
+spec:
+  selector:
+    app: rabbitmq
+  ports:
+    - name: http
+      port: 15672
+      targetPort: 15672 # Management UI port
+    - name: ampq
+      port: 5672
+      tragetPort: 5672
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: rabbitmq-queue
+#   namespace: profile-site
+# spec:
+#   type: LoadBalancer  # Creates a public IP for AMQP
+#   ports:
+#     - name: amqp
+#       port: 5672
+#       targetPort: 5672
+#       protocol: TCP
+#   selector:
+#     app: rabbitmq
 # #################################################################################################
