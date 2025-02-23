@@ -136,13 +136,13 @@ spec:
           timeoutSeconds: 3
           successThreshold: 1
           failureThreshold: 3
-        resources:
-          requests:
-            memory: 250Mi
-            cpu: 100m
-          limits:
-            memory: 250Mi
-            cpu: 300m
+        # resources:
+        #   requests:
+        #     memory: 250Mi
+        #     cpu: 100m
+        #   limits:
+        #     memory: 250Mi
+        #     cpu: 300m
       imagePullSecrets:
       - name: secret-tiger-docker
 ---
@@ -187,13 +187,13 @@ spec:
             value: "${DATA_SOURCE}" # ------------------------------------------------------------ envsubst populated Variable
         args:
           - "--no-collector.stat_bgwriter"
-        resources:
-          requests:
-            memory: 500Mi
-            cpu: 100m
-          limits:
-            memory: 500Mi
-            cpu: 300m
+        # resources:
+        #   requests:
+        #     memory: 500Mi
+        #     cpu: 100m
+        #   limits:
+        #     memory: 500Mi
+        #     cpu: 300m
       imagePullSecrets:
       - name: secret-tiger-docker
 ---
@@ -294,13 +294,13 @@ spec:
           ports:
             - name: http
               containerPort: 8080
-          resources:
-            limits:
-              cpu: 100m
-              memory: 128Mi
-            requests:
-              cpu: 100m
-              memory: 128Mi
+          # resources:
+          #   limits:
+          #     cpu: 100m
+          #     memory: 128Mi
+          #   requests:
+          #     cpu: 100m
+          #     memory: 128Mi
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -327,7 +327,7 @@ spec:
                   - key: node-group
                     operator: In
                     values:
-                      - master   # Match nodes with node-group=group1
+                      - group1   # Match nodes with node-group=group1
       securityContext:
         fsGroup: 472
         supplementalGroups:
@@ -394,17 +394,17 @@ spec:
                   - key: node-group
                     operator: In
                     values:
-                      - group1   # Match nodes with node-group=group1
+                      - master   # Match nodes with node-group=group1
       containers:
         - name: rabbitmq
           image: rabbitmq:3-management  # RabbitMQ with management UI
-          resources:
-            requests:
-              memory: "512Mi"
-              cpu: "250m"
-            limits:
-              memory: "2Gi"
-              cpu: "1"
+          # resources:
+          #   requests:
+          #     memory: "512Mi"
+          #     cpu: "250m"
+          #   limits:
+          #     memory: "2Gi"
+          #     cpu: "1"
           ports:
             - containerPort: 5672   # RabbitMQ message broker
             - containerPort: 15672  # RabbitMQ management UI
@@ -621,7 +621,7 @@ spec:
       targetPort: 15672 # Management UI port
     - name: ampq
       port: 5672
-      tragetPort: 5672
+      targetPort: 5672
 # ---
 # apiVersion: v1
 # kind: Service

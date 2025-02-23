@@ -5,7 +5,7 @@ metadata:
   namespace: profile-site
 spec:
   capacity:
-    storage: 10Gi
+    storage: 20Gi
   volumeMode: Filesystem
   accessModes:
     - ReadWriteOnce
