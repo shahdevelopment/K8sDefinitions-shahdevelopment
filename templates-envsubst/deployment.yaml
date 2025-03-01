@@ -394,7 +394,7 @@ spec:
                   - key: node-group
                     operator: In
                     values:
-                      - master   # Match nodes with node-group=group1
+                      - group1   # Match nodes with node-group=group1
       containers:
         - name: rabbitmq
           image: rabbitmq:3-management  # RabbitMQ with management UI
