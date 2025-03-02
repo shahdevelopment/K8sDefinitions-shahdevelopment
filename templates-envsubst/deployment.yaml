@@ -136,13 +136,13 @@ spec:
           timeoutSeconds: 3
           successThreshold: 1
           failureThreshold: 3
-        # resources:
-        #   requests:
-        #     memory: 250Mi
-        #     cpu: 100m
-        #   limits:
-        #     memory: 250Mi
-        #     cpu: 300m
+        resources:
+          requests:
+            memory: 250Mi
+            cpu: 100m
+          limits:
+            memory: 250Mi
+            cpu: 300m
       imagePullSecrets:
       - name: secret-tiger-docker
 ---
@@ -187,13 +187,13 @@ spec:
             value: "${DATA_SOURCE}" # ------------------------------------------------------------ envsubst populated Variable
         args:
           - "--no-collector.stat_bgwriter"
-        # resources:
-        #   requests:
-        #     memory: 500Mi
-        #     cpu: 100m
-        #   limits:
-        #     memory: 500Mi
-        #     cpu: 300m
+        resources:
+          requests:
+            memory: 500Mi
+            cpu: 100m
+          limits:
+            memory: 500Mi
+            cpu: 300m
       imagePullSecrets:
       - name: secret-tiger-docker
 ---
