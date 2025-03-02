@@ -33,6 +33,7 @@ metadata:
   name: back-end-ingress
   namespace: profile-site
   annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
     nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/limit-rps: "10" # Limit to 10 requests per second per client IP
     # nginx.ingress.kubernetes.io/whitelist-source-range-by-header: "X-Real-IP, X-Forwarded-For"
